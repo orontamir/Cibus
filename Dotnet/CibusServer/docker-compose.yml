@@ -1,0 +1,36 @@
+﻿version: '3.8'
+services:
+
+#------------------------ mysql ---------------------------
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+#      MYSQL_DATABASE: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - '~\Documents\Dev\MySQL:/var/lib/mysql'
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+#------------------------ Cibus Server ---------------------------    
+  cibus:
+    container_name: cibus
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - Jwt__Key=CibusTokenSecretCibusTokenSecret
+      - Jwt__Issuer=CibusTokenSecretCibusTokenSecret
+      - Jwt__Audience=CibusTokenSecretCibusTokenSecret
+      - DB_CONNECTION_STRING=server=host.docker.internal;Port=3306;user=root;password=qwerty;database=CibusDb
+      - secret=CibusTokenSecretCibusTokenSecret
+      - expirationInMinutes=43200  
+    restart: unless-stopped
+    ports:
+      - 80:80
+    depends_on:
+      - mysql
