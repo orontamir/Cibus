@@ -53,3 +53,11 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 *.vsidx
+*.vs
+.vs
+vs
+/Dotnet/.vs/
+/Dotnet/.vs/Cibus/
+/Dotnet/.vs/Cibus/FileContentIndex/
+/Dotnet/.vs/Cibus/v17/.suo
+/Dotnet/CibusServer/init.sh
